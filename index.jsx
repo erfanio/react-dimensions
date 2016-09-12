@@ -123,10 +123,10 @@ module.exports = function Dimensions ({
       }
 
       componentDidMount () {
-        if (!this.refs.wrapper) {
-          throw new Error('Cannot find wrapper div')
+        if (!this.refs.wrappedInstance) {
+          throw new Error('Cannot find wrapped instance')
         }
-        this._parent = this.refs.wrapper.parentNode
+        this._parent = this.refs.wrappedInstance.parentNode
         this.updateDimensionsImmediate()
         if (elementResize) {
           // Experimental: `element-resize-event` fires when an element resizes.
@@ -159,25 +159,24 @@ module.exports = function Dimensions ({
         const {containerWidth, containerHeight} = this.state
         if (this._parent && !containerWidth && !containerHeight) {
           // only trigger a warning about the wrapper div if we already have a reference to it
-          console.warn('Wrapper div has no height or width, try overriding style with `containerStyle` option')
+          console.warn('containerWidth and containerHeight were not set')
         }
         const wrapperStyle = {
           overflow: 'visible',
           height: 0,
           width: 0
         }
-        return (
-          <div style={wrapperStyle} ref='wrapper'>
-            {(containerWidth || containerHeight) &&
-              <ComposedComponent
-                {...this.state}
-                {...this.props}
-                updateDimensions={this.updateDimensions}
-                ref='wrappedInstance'
-              />
-            }
-          </div>
-        )
+        if (containerWidth || containerHeight) {
+          return <ComposedComponent
+            {...this.state}
+            {...this.props}
+            updateDimensions={this.updateDimensions}
+            ref='wrappedInstance'
+          />
+        }
+        else {
+          return <div style={wrapperStyle} ref='wrappedInstance'></div>;
+        }
       }
     }
   }
