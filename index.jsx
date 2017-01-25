@@ -173,9 +173,8 @@ module.exports = function Dimensions ({
             updateDimensions={this.updateDimensions}
             ref='wrappedInstance'
           />
-        }
-        else {
-          return <div style={wrapperStyle} ref='wrappedInstance'></div>;
+        } else {
+          return <div style={wrapperStyle} ref='wrappedInstance'></div>
         }
       }
     }
